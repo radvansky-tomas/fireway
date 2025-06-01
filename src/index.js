@@ -203,7 +203,7 @@ async function trackAsync({ log, file, forceWait }, fn) {
 }
 trackAsync[dontTrack] = true;
 
-async function migrate({ path: dir, projectId, storageBucket, dryrun, app, debug = false, require: req, forceWait = false } = {}) {
+async function migrate({ path: dir, projectId, storageBucket, dryrun, app, debug = false, require: req, forceWait = false, databaseId } = {}) {
 	if (req) {
 		try {
 			require(req);
@@ -302,7 +302,9 @@ async function migrate({ path: dir, projectId, storageBucket, dryrun, app, debug
 	}
 
 	// Use Firestore directly so we can mock for dryruns
-	const firestore = new admin.firestore.Firestore({ projectId });
+	const firestoreOptions = { projectId };
+	if (databaseId) firestoreOptions.databaseId = databaseId;
+	const firestore = new admin.firestore.Firestore(firestoreOptions);
 	firestore._fireway_stats = stats;
 
 	const collection = firestore.collection('fireway');

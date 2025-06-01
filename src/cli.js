@@ -17,6 +17,7 @@ prog
     .option('--dryrun', 'Simulates changes')
     .option('--forceWait', 'Forces waiting for migrations that do not strictly manage async calls')
     .option('--quiet', 'disables console debug logging within fireway\'s migrate')
+    .option('--databaseId', 'Firestore databaseId (default is (default))')
     .describe('Migrates schema to the latest version')
     .example('migrate')
     .example('migrate --path=./my-migrations')
