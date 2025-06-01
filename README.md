@@ -56,6 +56,7 @@ Options
   --dryrun       Simulates changes
   --forceWait    Forces waiting for migrations that do not strictly manage async calls
   --require      Requires a module before executing
+  --databaseId   Firestore databaseId (default is (default))
   -h, --help     Displays this message
 
 Examples
@@ -64,6 +65,7 @@ Examples
   $ fireway migrate --projectId=my-staging-id
   $ fireway migrate --dryrun
   $ fireway migrate --forceWait
+  $ fireway migrate --databaseId=custom-db
   $ fireway --require="ts-node/register" migrate
 ```
 
