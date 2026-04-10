@@ -320,7 +320,7 @@ test('async: unhandled async warning', wrapper(async ({ t, projectId, app }) => 
 	});
 
 	t.equal(
-		terminal.includes('WARNING: fireway detected open async calls'),
+		terminal.includes('WARNING: ts-fireway detected open async calls'),
 		true
 	);
 }));
@@ -334,7 +334,7 @@ test('async: handle unhandled async', wrapper(async ({ t, projectId, app }) => {
 	});
 
 	t.equal(
-		terminal.includes('WARNING: fireway detected open async calls'),
+		terminal.includes('WARNING: ts-fireway detected open async calls'),
 		false
 	);
 }));
@@ -389,7 +389,7 @@ test('async: unhandled async in dryrun', wrapper(async ({ t, projectId, firestor
 	t.equal(snapshot.size, 1);
 	t.deepEqual(doc1.data(), { key: 'value' });
 	t.equal(
-		terminal.includes('WARNING: fireway detected open async calls'),
+		terminal.includes('WARNING: ts-fireway detected open async calls'),
 		true
 	);
 }));
@@ -462,7 +462,7 @@ test('TypeScript: unhandled async warning', wrapper(async ({ t, projectId, app }
 	});
 
 	t.equal(
-		terminal.includes('WARNING: fireway detected open async calls'),
+		terminal.includes('WARNING: ts-fireway detected open async calls'),
 		true
 	);
 }));
@@ -476,7 +476,7 @@ test('TypeScript: handle unhandled async', wrapper(async ({ t, projectId, app })
 	});
 
 	t.equal(
-		terminal.includes('WARNING: fireway detected open async calls'),
+		terminal.includes('WARNING: ts-fireway detected open async calls'),
 		false
 	);
 }));

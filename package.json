@@ -1,8 +1,8 @@
 {
-  "name": "fireway",
+  "name": "ts-fireway",
   "version": "1.1.0",
   "description": "Schema migration tool for Firestore",
-  "types": "fireway.d.ts",
+  "types": "dist/index.d.ts",
   "keywords": [
     "schema",
     "migration",
@@ -10,40 +10,50 @@
     "typescript"
   ],
   "files": [
-    "/src",
+    "/dist",
     "LICENSE",
     "README.md",
+    "package.json",
     "fireway.d.ts"
   ],
-  "main": "src/index.js",
-  "bin": "src/cli.js",
+  "main": "dist/index.js",
+  "bin": {
+    "ts-fireway": "dist/cli.js"
+  },
   "repository": "git@github.com:kevlened/fireway.git",
-  "author": "kevlened <boyettel@gmail.com>",
+  "author": "Tomas Radvansky <radvansky.tomas@gmail.com>",
+  "contributors": [
+    "kevlened <boyettel@gmail.com>"
+  ],
   "license": "MIT",
   "scripts": {
     "setup": "firebase setup:emulators:firestore",
     "emulator": "firebase emulators:start --only firestore",
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
     "test-runner": "node tests",
-    "pretest": "mkdir -p tests/emptyMigration",
+    "pretest": "npm run build && mkdir -p tests/emptyMigration",
     "test": "FIRESTORE_EMULATOR_HOST=0.0.0.0:8181 start-test emulator tcp:8181 test-runner",
     "release": "yarn test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm login && npm publish"
   },
   "dependencies": {
-    "callsites": "^4.1.0",
-    "firebase-admin": "^12.0.0",
+    "callsites": "^4.2.0",
+    "firebase-admin": "^13.8.0",
     "md5": "^2.3.0",
     "sade": "^1.8.1",
-    "semver": "^7.6.0"
+    "semver": "^7.7.4"
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^2.0.7",
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "@types/md5": "^2.3.5",
+    "@types/node": "^25.6.0",
+    "@types/semver": "^7.7.1",
     "capture-console": "^1.0.2",
-    "firebase-tools": "^13.6.0",
-    "husky": "^9.0.11",
-    "start-server-and-test": "^2.0.3",
-    "tape": "^5.7.5",
+    "firebase-tools": "^15.14.0",
+    "husky": "^9.1.7",
+    "start-server-and-test": "^3.0.0",
+    "tape": "^5.9.0",
     "ts-node": "^10.9.2",
-    "@types/node": "^20.11.30",
-    "typescript": "^5.4.3"
+    "typescript": "^6.0.2"
   }
 }
