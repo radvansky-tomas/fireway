@@ -1,6 +1,8 @@
 import * as admin from 'firebase-admin';
 export interface MigrateOptions {
     app: admin.app.App;
+    auth: admin.auth.Auth;
+    storage: admin.storage.Storage;
     firestore: admin.firestore.Firestore;
     FieldValue: typeof admin.firestore.FieldValue;
     FieldPath: typeof admin.firestore.FieldPath;

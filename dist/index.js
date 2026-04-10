@@ -281,6 +281,27 @@ function buildMigrationResult(params) {
         success,
     };
 }
+function createMigrateOptions(app, firestore, dryrun) {
+    const base = {
+        app,
+        firestore,
+        FieldValue: admin.firestore.FieldValue,
+        FieldPath: admin.firestore.FieldPath,
+        Timestamp: admin.firestore.Timestamp,
+        dryrun,
+    };
+    Object.defineProperties(base, {
+        auth: {
+            enumerable: true,
+            get: () => app.auth(),
+        },
+        storage: {
+            enumerable: true,
+            get: () => app.storage(),
+        },
+    });
+    return base;
+}
 async function migrate(params = {}) {
     let { path: dir = './migrations', projectId, storageBucket, dryrun = false, app, debug = false, require: requireModule, forceWait = false, databaseId, } = params;
     if (requireModule) {
@@ -406,14 +427,7 @@ async function migrate(params = {}) {
             const success = await trackAsync({ log, file, forceWait }, async () => {
                 start = new Date();
                 try {
-                    await migrationFunction({
-                        app,
-                        firestore,
-                        FieldValue: admin.firestore.FieldValue,
-                        FieldPath: admin.firestore.FieldPath,
-                        Timestamp: admin.firestore.Timestamp,
-                        dryrun,
-                    });
+                    await migrationFunction(createMigrateOptions(app, firestore, dryrun));
                     return true;
                 }
                 catch (error) {

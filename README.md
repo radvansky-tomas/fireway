@@ -74,9 +74,9 @@ Examples
 Migration file name format: `v[semver]__[description].js`
 
 ```js
-// each script gets a pre-configured firestore admin instance
-// possible params: app, firestore, FieldValue, FieldPath, Timestamp, dryrun
-module.exports.migrate = async ({firestore, FieldValue}) => {
+// each script gets a pre-configured Firebase Admin context
+// possible params: app, auth, storage, firestore, FieldValue, FieldPath, Timestamp, dryrun
+module.exports.migrate = async ({firestore, FieldValue, auth, storage}) => {
     await firestore.collection('name').add({key: FieldValue.serverTimestamp()});
 };
 ```

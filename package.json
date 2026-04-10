@@ -20,7 +20,10 @@
   "bin": {
     "ts-fireway": "dist/cli.js"
   },
-  "repository": "git@github.com:kevlened/fireway.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radvansky-tomas/fireway.git"
+  },
   "author": "Tomas Radvansky <radvansky.tomas@gmail.com>",
   "contributors": [
     "kevlened <boyettel@gmail.com>"

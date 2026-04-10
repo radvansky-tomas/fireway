@@ -9,6 +9,8 @@ import semver from 'semver';
 
 export interface MigrateOptions {
   app: admin.app.App;
+  auth: admin.auth.Auth;
+  storage: admin.storage.Storage;
   firestore: admin.firestore.Firestore;
   FieldValue: typeof admin.firestore.FieldValue;
   FieldPath: typeof admin.firestore.FieldPath;
@@ -420,6 +422,34 @@ function buildMigrationResult(params: {
   };
 }
 
+function createMigrateOptions(
+  app: admin.app.App,
+  firestore: admin.firestore.Firestore,
+  dryrun: boolean,
+): MigrateOptions {
+  const base: Omit<MigrateOptions, 'auth' | 'storage'> & Partial<Pick<MigrateOptions, 'auth' | 'storage'>> = {
+    app,
+    firestore,
+    FieldValue: admin.firestore.FieldValue,
+    FieldPath: admin.firestore.FieldPath,
+    Timestamp: admin.firestore.Timestamp,
+    dryrun,
+  };
+
+  Object.defineProperties(base, {
+    auth: {
+      enumerable: true,
+      get: () => app.auth(),
+    },
+    storage: {
+      enumerable: true,
+      get: () => app.storage(),
+    },
+  });
+
+  return base as MigrateOptions;
+}
+
 export async function migrate(params: MigrateParams = {}): Promise<MigrationStats> {
   let {
     path: dir = './migrations',
@@ -578,14 +608,7 @@ export async function migrate(params: MigrateParams = {}): Promise<MigrationStat
       const success = await trackAsync({ log, file, forceWait }, async () => {
         start = new Date();
         try {
-          await migrationFunction({
-            app,
-            firestore,
-            FieldValue: admin.firestore.FieldValue,
-            FieldPath: admin.firestore.FieldPath,
-            Timestamp: admin.firestore.Timestamp,
-            dryrun,
-          });
+          await migrationFunction(createMigrateOptions(app, firestore, dryrun));
           return true;
         } catch (error) {
           log(`Error in ${file.filename}`, error);
